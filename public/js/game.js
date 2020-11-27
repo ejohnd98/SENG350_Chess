@@ -99,6 +99,10 @@ function create() {
     this.input.on('pointerdown', function (pointer) {
       let Xindex = Math.trunc(pointer.x/75);
       let Yindex = Math.trunc(pointer.y/75);
+      if(self.team == 'black'){
+        Xindex = 7 - Xindex;
+        Yindex = 7 - Yindex;
+      }
       clearMarkers();
       if(Xindex < 8 && Yindex < 8 && gameState === self.team && !hasMoved){
         let chosenSpace = board[Yindex][Xindex];
