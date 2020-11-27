@@ -209,7 +209,7 @@ function createBoard (self){
             strength: pieceTypes[pieceTypeTrim].strength,
             pieceType: pieceTypeTrim,
             pieceImg: pieceType,
-            team: startBoard[y][x].endsWith('W') ? 'white' : 'black',
+            team: pieceType.endsWith('W') ? 'white' : 'black',
             
             hasMoved: false,
             selected: false
@@ -237,11 +237,12 @@ function drawBoard (self){
   for(var y = 0; y < 8; y++){
     for(var x = 0; x < 8; x++){
       if(board[y][x].pieceType != ''){
+        let actualPos = (self.team == 'white')? {x: x, y:y} : {x: 7-x, y:7-y};
         if(board[y][x].selected){
-          pieces.push(self.add.image(x * 75 + 38, y * 75 + 38, 'select').setDisplaySize(75,75));
+          pieces.push(self.add.image(actualPos.x * 75 + 38, actualPos.y * 75 + 38, 'select').setDisplaySize(75,75));
         }
-        pieces.push(self.add.image(x * 75 + 38, y * 75 + 38, board[y][x].pieceImg).setDisplaySize(70,70));
-        pieces.push(self.add.image(x * 75 + 38, y * 75 + 38, 'health').setDisplaySize(70 * (board[y][x].hp / board[y][x].maxHp),70));
+        pieces.push(self.add.image(actualPos.x * 75 + 38, actualPos.y * 75 + 38, board[y][x].pieceImg).setDisplaySize(70,70));
+        pieces.push(self.add.image(actualPos.x * 75 + 38, actualPos.y * 75 + 38, 'health').setDisplaySize(70 * (board[y][x].hp / board[y][x].maxHp),70));
       }
     }
   }
@@ -400,7 +401,8 @@ function GetPossibleMoves (self, pos){
     let mv = movesToCheck.pop();
     if(PosOnBoard(mv) && board[mv.y][mv.x].team != self.team){
       possibleMoves.push(mv);
-      moveMarkers.push(self.add.image(mv.x * 75 + 38, mv.y * 75 + 38, 'move').setDisplaySize(75,75));
+      let actualPos = (self.team == 'white')? {x: mv.x, y:mv.y} : {x: 7-mv.x, y:7-mv.y};
+      moveMarkers.push(self.add.image(actualPos.x * 75 + 38, actualPos.y * 75 + 38, 'move').setDisplaySize(75,75));
     }
   }
 }
